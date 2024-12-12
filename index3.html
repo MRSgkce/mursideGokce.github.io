@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VKİ Hesaplama</title>
+    <style>
+        
+        #sonuc {
+            margin-top: 20px; 
+            font-size: 1.2em;  
+            color: blue;       
+        }
+    </style>
+    <script>
+
+        function vkiHesapla() {
+            
+            let boyStr = prompt("Boyunuzu metre cinsinden girin (örneğin: 1.75):");
+            let kiloStr = prompt("Kilonuzu kilogram cinsinden girin (örneğin: 70):");
+
+          
+            let boy = Number(boyStr); 
+            let kilo = Number(kiloStr); 
+
+            
+            if (isNaN(boy) || boy <= 0) {
+              
+                document.getElementById("sonuc").innerText = "Lütfen geçerli bir boy değeri girin (0'dan büyük).";
+                return; 
+            }
+
+         
+            if (isNaN(kilo) || kilo <= 0) {
+                
+                document.getElementById("sonuc").innerText = "Lütfen geçerli bir kilo değeri girin (0'dan büyük).";
+                return; 
+            }
+
+            
+            let vki = kilo / (boy * boy); 
+
+         
+            let durum = ""; 
+            if (vki < 18.5) {
+                durum = "Durum: Zayıf";
+            } else if (vki >= 18.5 && vki < 24.9) {
+                durum = "Durum: Normal";
+            } else if (vki >= 25 && vki < 29.9) {
+                durum = "Durum: Fazla Kilolu";
+            } else if (vki >= 30 && vki < 34.9) {
+                durum = "Durum: 1. Derece Obez";
+            } else if (vki >= 35 && vki < 39.9) {
+                durum = "Durum: 2. Derece Obez";
+            } else {
+                durum = "Durum: 3. Derece Obez";
+            }
+
+           
+            document.getElementById("sonuc").innerText = "Vücut Kitle İndeksiniz: " + vki.toFixed(2) + "\n" + durum;
+        }
+    </script>
+</head>
+<body>
+    <h1>Vücut Kitle İndeksi Hesaplayıcı</h1>
+    <button onclick="vkiHesapla()">VKİ Hesapla</button> 
+    <div id="sonuc"></div> 
+</body>
+</html>
+
