@@ -1,0 +1,19 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+
+  #box {
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    border-radius: 0; 
+    transition: transform 1s ease, background-color 1s ease, border-radius 1s ease;
+  }
+  
