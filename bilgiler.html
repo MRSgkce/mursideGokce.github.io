@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
+    <title>Notlar</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(45deg, #fad0c9, #fad0c4);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .note-form {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-form input, .note-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .note-form button {
+            background-color: #ff6f61;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .note-form button:hover {
+            background-color: #e55a4f;
+        }
+
+        .notes-container {
+            margin-top: 40px;
+        }
+
+        .note {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            position: relative; /* Pozisyonu göreli yapıyoruz */
+        }
+
+        .note p {
+            margin: 0;
+        }
+
+        .delete-btn {
+            background-color: transparent; /* Arka planı kaldırdık */
+            color: #ff6f61; /* Çöp kovası simgesi rengini ayarladık */
+            border: none; /* Kenarlığı kaldırdık */
+            cursor: pointer;
+            font-size: 18px;
+            position: absolute; /* Konumlandırma */
+            top: 10px; /* Yukarıda biraz mesafe */
+            right: 10px; /* Sağda biraz mesafe */
+        }
+
+        .delete-btn i {
+            font-size: 18px; /* Çöp kovası simgesi boyutu */
+        }
+
+        .delete-btn:hover {
+            color: #e55a4f; /* Hover durumunda simge rengini değiştirdik */
+        }
+
+        .back-home-btn {
+            background-color: #ff6f61;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .back-home-btn i {
+            margin-right: 10px;
+        }
+
+        .back-home-btn:hover {
+            background-color: #e55a4f;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Content -->
+    <div class="container">
+        <h1>Manage Your Notes</h1>
+
+        <!-- Add Note Form -->
+        <div class="note-form">
+            <input type="text" id="note-title" placeholder="Enter note title" />
+            <textarea id="note-content" rows="4" placeholder="Enter note content"></textarea>
+            <button onclick="addNote()">Add Note</button>
+        </div>
+
+        <!-- Notes Container -->
+        <div class="notes-container" id="notes-container">
+            <h2>Your Notes</h2>
+        </div>
+    </div>
+
+    <!-- Back to Home Button with home icon -->
+    <a href="./index.html" class="back-home-btn">
+        <i class="fas fa-home"></i> Go to Home
+    </a>
+
+    <script>
+        // Function to add a new note
+        function addNote() {
+            // Get title and content from input fields
+            const title = document.getElementById('note-title').value;
+            const content = document.getElementById('note-content').value;
+
+            if (title && content) {
+                // Create a new note object
+                const note = { title, content };
+
+                // Get the existing notes from localStorage (if any)
+                let notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+                // Add the new note to the notes array
+                notes.push(note);
+
+                // Save the updated notes array to localStorage
+                localStorage.setItem('notes', JSON.stringify(notes));
+
+                // Clear the input fields
+                document.getElementById('note-title').value = '';
+                document.getElementById('note-content').value = '';
+
+                // Re-render the notes
+                displayNotes();
+            }
+        }
+
+        // Function to display all notes
+        function displayNotes() {
+            // Get the notes from localStorage
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+            // Get the container element to display notes
+            const notesContainer = document.getElementById('notes-container');
+            notesContainer.innerHTML = '<h2>Your Notes</h2>'; // Reset notes display
+
+            // Loop through the notes and display them
+            notes.forEach((note, index) => {
+                const noteElement = document.createElement('div');
+                noteElement.classList.add('note');
+
+                // Set the note content
+                noteElement.innerHTML = `
+                    <h3>${note.title}</h3>
+                    <p>${note.content}</p>
+                    
+                    <button class="delete-btn" onclick="deleteNote(${index})">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                `;
+
+                // Append the note to the container
+                notesContainer.appendChild(noteElement);
+            });
+        }
+
+        // Function to delete a note
+        function deleteNote(index) {
+            // Get the existing notes from localStorage
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+            // Remove the note at the given index
+            notes.splice(index, 1);
+
+            // Save the updated notes array to localStorage
+            localStorage.setItem('notes', JSON.stringify(notes));
+
+            // Re-render the notes
+            displayNotes();
+        }
+
+        // Display notes when the page loads
+        window.onload = function() {
+            displayNotes();
+        }
+    </script>
+</body>
+</html>

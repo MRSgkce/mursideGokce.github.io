@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Quiz - Test Your Literary Knowledge!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #6c63ff;
+            margin-bottom: 30px;
+        }
+
+        .question-card {
+            background-color: #fff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .options li {
+            background-color: #f8f8f8;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li:hover {
+            background-color: #eaeaea;
+        }
+
+        .correct {
+            background-color: #8bc34a;
+        }
+
+        .incorrect {
+            background-color: #f44336;
+        }
+
+        .answer {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .answer span {
+            font-weight: bold;
+        }
+
+        .explanation {
+            font-size: 16px;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Books Quiz - Test Your Literary Knowledge!</h1>
+        
+        <!-- Question 1 -->
+        <div class="question-card">
+            <p class="question">What is the title of the first Sherlock Holmes book by Arthur Conan Doyle?</p>
+            <ul class="options">
+                <li data-answer="incorrect">The Sign of the Four</li>
+                <li data-answer="incorrect">A Case of Identity</li>
+                <li data-answer="incorrect">The Doings of Raffles Haw</li>
+                <li data-answer="correct">A Study in Scarlet</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>A Study in Scarlet</span>.
+            </div>
+            <div class="explanation">
+                "A Study in Scarlet" is the first Sherlock Holmes novel written by Sir Arthur Conan Doyle, first published in 1887.
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card">
+            <p class="question">George Orwell wrote this book, which is often considered a statement on government oversight.</p>
+            <ul class="options">
+                <li data-answer="incorrect">The Old Man and the Sea</li>
+                <li data-answer="incorrect">Catcher and the Rye</li>
+                <li data-answer="incorrect">To Kill a Mockingbird</li>
+                <li data-answer="correct">1984</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>1984</span>.
+            </div>
+            <div class="explanation">
+                George Orwell's "1984" is a dystopian novel that explores themes of government surveillance and totalitarianism.
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card">
+            <p class="question">Which famous book is sub-titled 'The Modern Prometheus'?</p>
+            <ul class="options">
+                <li data-answer="incorrect">Dracula</li>
+                <li data-answer="incorrect">The Strange Case of Dr. Jekyll and Mr. Hyde</li>
+                <li data-answer="incorrect">The Legend of Sleepy Hollow</li>
+                <li data-answer="correct">Frankenstein</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>Frankenstein</span>.
+            </div>
+            <div class="explanation">
+                Mary Shelley's "Frankenstein" is subtitled "The Modern Prometheus" as it deals with themes of creation and the dangers of pushing beyond natural boundaries.
+            </div>
+        </div>
+
+        <!-- More questions can be added in the same format -->
+
+    </div>
+
+    <script>
+        // Add interactivity to the quiz
+        const options = document.querySelectorAll('.options li');
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove previous highlights
+                options.forEach(opt => opt.classList.remove('correct', 'incorrect'));
+                // Highlight the clicked option
+                if (this.getAttribute('data-answer') === 'correct') {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('incorrect');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

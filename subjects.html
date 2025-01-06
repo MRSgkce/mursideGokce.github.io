@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Mac-style Dropdown Menu</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Navbar Container */
+        nav {
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Main Menu Items */
+        ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            position: relative;
+            padding: 10px 20px;
+        }
+
+        li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 10px 20px;
+        }
+
+        li a:hover {
+            background-color: #555;
+        }
+
+        /* Submenu */
+        .submenu {
+            display: none;
+            position: absolute;
+            background-color: #f4f4f4;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .submenu a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .submenu a:hover {
+            background-color: #ddd;
+        }
+
+        /* Display submenu on hover */
+        li:hover .submenu {
+            display: block;
+        }
+
+        /* Specific submenu styling */
+        .submenu > li {
+            position: relative;
+        }
+
+        .submenu .submenu {
+            top: 0;
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <ul>
+            <li><a href="#">File</a>
+                <ul class="submenu">
+                    <li><a href="#">New</a></li>
+                    <li><a href="#">Open</a></li>
+                    <li><a href="#">Save</a></li>
+                    <li><a href="#">Exit</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Edit</a>
+                <ul class="submenu">
+                    <li><a href="#">Undo</a></li>
+                    <li><a href="#">Redo</a></li>
+                    <li><a href="#">Cut</a></li>
+                    <li><a href="#">Copy</a></li>
+                </ul>
+            </li>
+            <li><a href="#">View</a>
+                <ul class="submenu">
+                    <li><a href="#">Zoom In</a></li>
+                    <li><a href="#">Zoom Out</a></li>
+                    <li><a href="#">Fullscreen</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Help</a>
+                <ul class="submenu">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+</body>
+</html>
+
+

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computers Quiz - Learn and Test Your Knowledge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #ff6f61;
+            margin-bottom: 30px;
+        }
+
+        .question-card {
+            background-color: #fff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .options li {
+            background-color: #f8f8f8;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li:hover {
+            background-color: #eaeaea;
+        }
+
+        .correct {
+            background-color: #8bc34a;
+        }
+
+        .incorrect {
+            background-color: #f44336;
+        }
+
+        .answer {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .answer span {
+            font-weight: bold;
+        }
+
+        .explanation {
+            font-size: 16px;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Computers Quiz - Learn and Test Your Knowledge</h1>
+        
+        <!-- Question 1 -->
+        <div class="question-card">
+            <p class="question">Who invented the first mechanical computer?</p>
+            <ul class="options">
+                <li data-answer="incorrect">Alan Turing</li>
+                <li data-answer="incorrect">Charles Babbage</li>
+                <li data-answer="incorrect">Konrad Zuse</li>
+                <li data-answer="correct">Charles Babbage</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>Charles Babbage</span>.
+            </div>
+            <div class="explanation">
+                Charles Babbage is known as the father of the computer for inventing the first mechanical computer, the Analytical Engine.
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card">
+            <p class="question">What is the primary function of the CPU in a computer?</p>
+            <ul class="options">
+                <li data-answer="incorrect">Store data</li>
+                <li data-answer="incorrect">Manage power</li>
+                <li data-answer="incorrect">Display graphics</li>
+                <li data-answer="correct">Execute instructions</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>Execute instructions</span>.
+            </div>
+            <div class="explanation">
+                The CPU (Central Processing Unit) executes instructions from the computer's programs, essentially acting as the brain of the computer.
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card">
+            <p class="question">Which of the following is an example of an open-source operating system?</p>
+            <ul class="options">
+                <li data-answer="incorrect">Windows</li>
+                <li data-answer="incorrect">macOS</li>
+                <li data-answer="incorrect">Android</li>
+                <li data-answer="correct">Linux</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>Linux</span>.
+            </div>
+            <div class="explanation">
+                Linux is an open-source operating system, meaning its source code is available to the public to use, modify, and distribute.
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card">
+            <p class="question">Who is the founder of Microsoft?</p>
+            <ul class="options">
+                <li data-answer="incorrect">Steve Jobs</li>
+                <li data-answer="incorrect">Mark Zuckerberg</li>
+                <li data-answer="incorrect">Larry Page</li>
+                <li data-answer="correct">Bill Gates</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>Bill Gates</span>.
+            </div>
+            <div class="explanation">
+                Bill Gates co-founded Microsoft in 1975, which has since become one of the world's largest technology companies.
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-card">
+            <p class="question">What does HTTP stand for?</p>
+            <ul class="options">
+                <li data-answer="incorrect">Hyper Text Transfer Protocol</li>
+                <li data-answer="incorrect">High Transmission Text Protocol</li>
+                <li data-answer="incorrect">Hyperlink Transfer Protocol</li>
+                <li data-answer="correct">HyperText Transfer Protocol</li>
+            </ul>
+            <div class="answer">
+                The correct answer is <span>HyperText Transfer Protocol</span>.
+            </div>
+            <div class="explanation">
+                HTTP is the protocol used for transferring web pages over the internet.
+            </div>
+        </div>
+
+        <!-- More questions can be added in the same format -->
+
+    </div>
+
+    <script>
+        // Add interactivity to the quiz
+        const options = document.querySelectorAll('.options li');
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove previous highlights
+                options.forEach(opt => opt.classList.remove('correct', 'incorrect'));
+                // Highlight the clicked option
+                if (this.getAttribute('data-answer') === 'correct') {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('incorrect');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
