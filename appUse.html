@@ -15,77 +15,6 @@
             overflow-x: hidden;
         }
 
-        /* Navbar */
-        nav {
-            background-color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            justify-content: center;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            font-size: 18px;
-            color: #555;
-            padding: 10px 20px;
-            position: relative;
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-            transition: color 0.3s, border-bottom 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: #ff6f61;
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 0%;
-            height: 2px;
-            background: #ff6f61;
-            transition: width 0.3s;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        nav ul li a:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-        nav ul li a:nth-child(2) {
-            animation-delay: 0.4s;
-        }
-        nav ul li a:nth-child(3) {
-            animation-delay: 0.6s;
-        }
-
         /* Page Content */
         .container {
             text-align: center;
@@ -176,18 +105,6 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav>
-        <ul>
-            <li><a href="./home.html">Home</a></li>
-            <li><a href="./highscores.html">Scores</a></li>
-            <li><a href="./folders.html">Movies</a></li>
-            <li><a href="./contact.html">Science</a></li>
-            <li><a href="./bilgiler.html">Add Notes</a></li>
-            <li><a href="./contact.html">Contact</a></li>
-        </ul>
-    </nav>
-
     <!-- Page Content -->
     <div class="container">
         <h1>How to Solve the Quiz</h1>
@@ -201,7 +118,7 @@
                 <li><strong>Step 5:</strong> Keep track of your score as you progress through the questions.</li>
                 <li><strong>Step 6:</strong> At the end of the quiz, your final score will be displayed. You can choose to retry or move to a different category.</li>
             </ul>
-            <img src="https://via.placeholder.com/700x400" alt="Quiz Example">
+
             <p>Good luck and have fun!</p>
             <!-- Button with JavaScript to go back -->
             <button class="btn" onclick="window.history.back()">Go to Home</button>

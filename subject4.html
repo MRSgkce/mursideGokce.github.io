@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sports Quiz - Test Your Knowledge!</title>
+    <title>Sports Quiz - Knowledge!</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -23,7 +23,7 @@
         h1 {
             text-align: center;
             font-size: 36px;
-            color: #ff6f61;
+            color: #6c63ff;
             margin-bottom: 30px;
         }
 
@@ -51,20 +51,6 @@
             margin: 10px 0;
             padding: 10px;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .options li:hover {
-            background-color: #eaeaea;
-        }
-
-        .correct {
-            background-color: #8bc34a;
-        }
-
-        .incorrect {
-            background-color: #f44336;
         }
 
         .answer {
@@ -75,88 +61,68 @@
         .answer span {
             font-weight: bold;
         }
-
-        .explanation {
-            font-size: 16px;
-            color: #777;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Sports Quiz - Test Your Knowledge!</h1>
-        
-        <!-- Question 1 -->
-        <div class="question-card">
-            <p class="question">What is the maximum number of points that can be scored in a single game of American football?</p>
-            <ul class="options">
-                <li data-answer="incorrect">19</li>
-                <li data-answer="incorrect">69</li>
-                <li data-answer="incorrect">41</li>
-                <li data-answer="correct">25</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>25</span>.
-            </div>
-            <div class="explanation">
-                In American football, the maximum number of points that can be scored in a single game comes from a combination of touchdowns, field goals, and extra points.
-            </div>
+        <h1>Musicals & Theatres Quiz - Test Your Theatre Knowledge!</h1>
+        <div id="questions-container">
+            <!-- Sorular burada dinamik olarak yüklenecek -->
         </div>
-
-        <!-- Question 2 -->
-        <div class="question-card">
-            <p class="question">Who won the premier league title in the 2015-2016 season following a fairy tale run?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Tottenham Hotspur</li>
-                <li data-answer="incorrect">Watford</li>
-                <li data-answer="incorrect">Stoke City</li>
-                <li data-answer="correct">Leicester City</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Leicester City</span>.
-            </div>
-            <div class="explanation">
-                Leicester City's triumph in the 2015-2016 Premier League season was one of the greatest underdog stories in sports history, as they defied odds of 5000-1 to win the title.
-            </div>
-        </div>
-
-        <!-- Question 3 -->
-        <div class="question-card">
-            <p class="question">Who won the 2015 Formula 1 World Championship?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Nico Rosberg</li>
-                <li data-answer="incorrect">Sebastian Vettel</li>
-                <li data-answer="incorrect">Jenson Button</li>
-                <li data-answer="correct">Lewis Hamilton</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Lewis Hamilton</span>.
-            </div>
-            <div class="explanation">
-                Lewis Hamilton won his third Formula 1 World Championship in 2015, securing the title after a dominant season with Mercedes.
-            </div>
-        </div>
-
-        <!-- More questions can be added in the same format -->
-
     </div>
 
     <script>
-        // Add interactivity to the quiz
-        const options = document.querySelectorAll('.options li');
-        options.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remove previous highlights
-                options.forEach(opt => opt.classList.remove('correct', 'incorrect'));
-                // Highlight the clicked option
-                if (this.getAttribute('data-answer') === 'correct') {
-                    this.classList.add('correct');
-                } else {
-                    this.classList.add('incorrect');
-                }
+        // Soruları çekmek için API'yi kullan
+        fetch('https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple')
+            .then(response => response.json()) // JSON formatına dönüştür
+            .then(data => {
+                const questionsContainer = document.getElementById('questions-container');
+
+                // Her bir soruyu işleyip ekleyelim
+                data.results.forEach(questionData => {
+                    const questionCard = document.createElement('div');
+                    questionCard.classList.add('question-card');
+                    
+                    // Soru başlığını ekleyelim
+                    const questionText = document.createElement('p');
+                    questionText.classList.add('question');
+                    questionText.innerHTML = questionData.question;
+                    questionCard.appendChild(questionText);
+
+                    // Şıklar listesini oluştur
+                    const optionsList = document.createElement('ul');
+                    optionsList.classList.add('options');
+                    
+                    const answerChoices = [...questionData.incorrect_answers];
+                    const correctAnswer = questionData.correct_answer;
+
+                    // Doğru cevabı rastgele bir yere ekleyelim
+                    const correctAnswerIndex = Math.floor(Math.random() * 4);
+                    answerChoices.splice(correctAnswerIndex, 0, correctAnswer);
+                    
+                    // Şıkları ekleyelim
+                    answerChoices.forEach(choice => {
+                        const optionItem = document.createElement('li');
+                        optionItem.textContent = choice;
+                        optionsList.appendChild(optionItem);
+                    });
+                    
+                    questionCard.appendChild(optionsList);
+
+                    // Cevap kısmını ekleyelim
+                    const answerDiv = document.createElement('div');
+                    answerDiv.classList.add('answer');
+                    answerDiv.innerHTML = `The correct answer is: <span>${correctAnswer}</span>`;
+                    
+                    questionCard.appendChild(answerDiv);
+
+                    // Soruyu sayfaya ekleyelim
+                    questionsContainer.appendChild(questionCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching questions:', error);
             });
-        });
     </script>
 </body>
 </html>

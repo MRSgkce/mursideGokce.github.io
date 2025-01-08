@@ -23,13 +23,23 @@
     padding: 1.5rem;
     width: 100%;
 }
-
+/*
 .correct{
  background-color: #28a745;
 }
 .incorrect{
   background-color: #dc3545;
+}*/
+
+.choice-container.correct {
+    background-color: #28a745; /* Yeşil renk (doğru) */
+    color: white;
 }
+.choice-container.incorrect {
+    background-color: #dc3545; /* Kırmızı renk (yanlış) */
+    color: white;
+}
+
 
 /*HUD*/
 

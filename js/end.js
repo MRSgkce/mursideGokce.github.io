@@ -9,37 +9,37 @@ const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
 const MAX_HIGH_SCORES = 5;
 
-// Display the most recent score
+// gösterilen score
 finalScore.innerText = mostRecentScore;
 
-// Enable the save button only if a username is entered
+// bir kullanıcı adı girilmeden kaydet butonu pasif
 username.addEventListener("keyup", () => {
     saveScoreBtn.disabled = !username.value;
 });
 
-// Save high score function
+// kaydet butonuna tıklanınca çalışacak fonksiyon
 saveHighScore = e => {
     console.log('clicked the save button!');
     e.preventDefault();   
 
-    // Create a new score object
+    // yeni bir score oluştur
     const score = {
-        score: mostRecentScore, // Use the real score here instead of random
+        score: mostRecentScore, 
         name: username.value
     };
 
-    // Push the new score into the highScores array
+    // skoru ekle
     highScores.push(score);
    
-    // Sort the high scores in descending order
+    // Sırala
     highScores.sort((a, b) => b.score - a.score);
 
-    // Keep only the top MAX_HIGH_SCORES scores
+    // En yüksek 5 skoru al
     highScores.splice(MAX_HIGH_SCORES);
 
-    // Save the updated high scores back to localStorage
+    // Yerel depolamaya kaydet
     localStorage.setItem("highScores", JSON.stringify(highScores));
 
-    // Redirect to the main page
+    // Anasayfaya git
     window.location.assign("/");
 };

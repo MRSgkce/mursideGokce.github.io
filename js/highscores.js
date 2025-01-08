@@ -1,7 +1,10 @@
 const highScoresList = document.getElementById('highScoresList');
 const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
-// add some li to our ul:
+//Tarayıcıdaki yerel depolamadan "highScores" anahtarıyla saklanan veriyi alır.Eğer veri varsa bir string yoksa null döner.
+
+
+//hightscores içindeki js dizisi içindeki her bir elemanı alıp bir li elemanı oluşturup highScoresList'e ekliyoruz.
 highScoresList.innerHTML = highScores
 .map(score => {
    return `<li class= "high-score">${score.name} - ${score.score}</li>`;

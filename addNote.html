@@ -156,14 +156,14 @@
                 // Create a new note object
                 const note = { title, content };
 
-                // Get the existing notes from localStorage (if any)
+                // Mevcut notları localStorage'dan (varsa) alın
                 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 
-                // Add the new note to the notes array
+                // yeni notlar arrayine ekle
                 notes.push(note);
 
-                // Save the updated notes array to localStorage
-                localStorage.setItem('notes', JSON.stringify(notes));
+                // güncellenen notlar dizisini localStorage'a kaydet
+                localStorage.setItem('notes', JSON.stringify(notes));//Notlar dizisi bir JSON string'e dönüştürülür.
 
                 // Clear the input fields
                 document.getElementById('note-title').value = '';
@@ -176,19 +176,19 @@
 
         // Function to display all notes
         function displayNotes() {
-            // Get the notes from localStorage
+            // notları storageden al
             const notes = JSON.parse(localStorage.getItem('notes')) || [];
 
-            // Get the container element to display notes
+            // Get the notes container
             const notesContainer = document.getElementById('notes-container');
             notesContainer.innerHTML = '<h2>Your Notes</h2>'; // Reset notes display
 
-            // Loop through the notes and display them
+            // gösterilecek notları döngü ile oluştur
             notes.forEach((note, index) => {
                 const noteElement = document.createElement('div');
                 noteElement.classList.add('note');
 
-                // Set the note content
+                
                 noteElement.innerHTML = `
                     <h3>${note.title}</h3>
                     <p>${note.content}</p>
@@ -205,20 +205,20 @@
 
         // Function to delete a note
         function deleteNote(index) {
-            // Get the existing notes from localStorage
+            // notları storageden al
             let notes = JSON.parse(localStorage.getItem('notes')) || [];
 
-            // Remove the note at the given index
+            // verilen index'teki notu sil
             notes.splice(index, 1);
 
-            // Save the updated notes array to localStorage
+            // güncellenen notları localStorage'a kaydet
             localStorage.setItem('notes', JSON.stringify(notes));
 
-            // Re-render the notes
+            // tekrar notları göster
             displayNotes();
         }
 
-        // Display notes when the page loads
+        // sayfa yüklendiğinde notları göster
         window.onload = function() {
             displayNotes();
         }

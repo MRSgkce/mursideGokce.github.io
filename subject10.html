@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japanese Anime & Manga Quiz - Test Your Knowledge!</title>
+    <title>Cartoons and Animations Quiz - Knowledge!</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -51,20 +51,6 @@
             margin: 10px 0;
             padding: 10px;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .options li:hover {
-            background-color: #eaeaea;
-        }
-
-        .correct {
-            background-color: #8bc34a;
-        }
-
-        .incorrect {
-            background-color: #f44336;
         }
 
         .answer {
@@ -75,88 +61,68 @@
         .answer span {
             font-weight: bold;
         }
-
-        .explanation {
-            font-size: 16px;
-            color: #777;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Japanese Anime & Manga Quiz - Test Your Knowledge!</h1>
-
-        <!-- Question 1 -->
-        <div class="question-card">
-            <p class="question">In the anime Black Butler, who is betrothed to be married to Ciel Phantomhive?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Rachel Phantomhive</li>
-                <li data-answer="incorrect">Alexis Leon Midford</li>
-                <li data-answer="incorrect">Angelina Dalles</li>
-                <li data-answer="correct">Elizabeth Midford</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Elizabeth Midford</span>.
-            </div>
-            <div class="explanation">
-                Elizabeth Midford is Ciel Phantomhive's fiancée in the anime series *Black Butler*.
-            </div>
+        <h1>Musicals & Theatres Quiz - Test Your Theatre Knowledge!</h1>
+        <div id="questions-container">
+            <!-- Sorular burada dinamik olarak yüklenecek -->
         </div>
-
-        <!-- Question 2 -->
-        <div class="question-card">
-            <p class="question">In "Fairy Tail", what is the nickname of Natsu Dragneel?</p>
-            <ul class="options">
-                <li data-answer="incorrect">The Dragon Slayer</li>
-                <li data-answer="incorrect">The Dragon</li>
-                <li data-answer="incorrect">The Demon</li>
-                <li data-answer="correct">The Salamander</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>The Salamander</span>.
-            </div>
-            <div class="explanation">
-                Natsu Dragneel, the main character in *Fairy Tail*, is often referred to as "The Salamander" due to his fire abilities.
-            </div>
-        </div>
-
-        <!-- Question 3 -->
-        <div class="question-card">
-            <p class="question">Which of the following originated as a manga?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Cowboy Bebop</li>
-                <li data-answer="incorrect">High School DxD</li>
-                <li data-answer="incorrect">Gurren Lagann</li>
-                <li data-answer="correct">Akira</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Akira</span>.
-            </div>
-            <div class="explanation">
-                *Akira* originally started as a manga before being adapted into an anime, and it is considered one of the most influential works in the anime genre.
-            </div>
-        </div>
-
-        <!-- More questions can be added in the same format -->
-
     </div>
 
     <script>
-        // Add interactivity to the quiz
-        const options = document.querySelectorAll('.options li');
-        options.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remove previous highlights
-                options.forEach(opt => opt.classList.remove('correct', 'incorrect'));
-                // Highlight the clicked option
-                if (this.getAttribute('data-answer') === 'correct') {
-                    this.classList.add('correct');
-                } else {
-                    this.classList.add('incorrect');
-                }
+        // Soruları çekmek için API'yi kullan
+        fetch('https://opentdb.com/api.php?amount=3&category=31&difficulty=easy&type=multiple')
+            .then(response => response.json()) // JSON formatına dönüştür
+            .then(data => {
+                const questionsContainer = document.getElementById('questions-container');
+
+                // Her bir soruyu işleyip ekleyelim
+                data.results.forEach(questionData => {
+                    const questionCard = document.createElement('div');
+                    questionCard.classList.add('question-card');
+                    
+                    // Soru başlığını ekleyelim
+                    const questionText = document.createElement('p');
+                    questionText.classList.add('question');
+                    questionText.innerHTML = questionData.question;
+                    questionCard.appendChild(questionText);
+
+                    // Şıklar listesini oluştur
+                    const optionsList = document.createElement('ul');
+                    optionsList.classList.add('options');
+                    
+                    const answerChoices = [...questionData.incorrect_answers];
+                    const correctAnswer = questionData.correct_answer;
+
+                    // Doğru cevabı rastgele bir yere ekleyelim
+                    const correctAnswerIndex = Math.floor(Math.random() * 4);
+                    answerChoices.splice(correctAnswerIndex, 0, correctAnswer);
+                    
+                    // Şıkları ekleyelim
+                    answerChoices.forEach(choice => {
+                        const optionItem = document.createElement('li');
+                        optionItem.textContent = choice;
+                        optionsList.appendChild(optionItem);
+                    });
+                    
+                    questionCard.appendChild(optionsList);
+
+                    // Cevap kısmını ekleyelim
+                    const answerDiv = document.createElement('div');
+                    answerDiv.classList.add('answer');
+                    answerDiv.innerHTML = `The correct answer is: <span>${correctAnswer}</span>`;
+                    
+                    questionCard.appendChild(answerDiv);
+
+                    // Soruyu sayfaya ekleyelim
+                    questionsContainer.appendChild(questionCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching questions:', error);
             });
-        });
     </script>
 </body>
 </html>

@@ -14,16 +14,16 @@ let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 
-let questions = []; //voir json
+let questions = []; 
 
-//fetch question from .json:
+
 fetch(
-    //"questions.json"
-    "https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple"
+    
+    "https://opentdb.com/api.php?amount=20&category=11&difficulty=easy&type=multiple"
     )
 .then(res =>{
     return res.json();
-})
+})//res.json() API'den dönen yanıtı JSON formatına dönüştürür. Bu, asenkron bir işlem olduğu için .then() içinde yapılır.
   .then(loadedQuestions => {
       console.log(loadedQuestions.results);
 
@@ -32,12 +32,16 @@ fetch(
              question: loadedQuestion.question
           };
 
-          const answerChoices = [...loadedQuestion.incorrect_answers];
+          //map() fonksiyonu ile her bir soruyu alıp,
+          // formatlamak için yeni bir dizi oluşturuluyor. formattedQuestion adlı nesne, her bir soruyu biçimlendiriyor.
+
+          const answerChoices = [...loadedQuestion.incorrect_answers]; //yanlış sorular tutulur
+
           formattedQuestion.answer = Math.floor(Math.random() * 3) + 1;
           answerChoices.slice(
               formattedQuestion.answer - 1,
               0,
-              loadedQuestion.correct_answer
+              loadedQuestion.correct_answer//doğru cevabı rastgele yerleştirmek için
           );
 
           answerChoices.forEach((choice, index) =>{
@@ -46,9 +50,7 @@ fetch(
           return formattedQuestion;
       });
 
-      
-       
-      //questions = loadedQuestions;
+
       startGame();
   })
     .catch(err => {
@@ -56,32 +58,6 @@ fetch(
     });
 
     
-
-    /*{
-        question: "Inside which HTML element do we put the JavaScript",
-        choice1: "<script>",
-        choice2: "<javascript>",
-        choice3: "<js>",
-        choice4: "<scripting>",
-        answer: 1
-    },
-    {
-        question: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        choice1: "<script href='xxx.js'>",
-        choice2: "<script name ='xxx.js'>",
-        choice3: "<script src='xxx.js'>",
-        choice4: "<script file='xxx.js'>",
-        answer: 3
-    },
-    {
-        question: "How do you write 'Hello World' in an alert box?",
-        choice1: "msgBox('Hello Word');",
-        choice2: "alertBox('Hello World');",
-        choice3: "msg('Hello World');",
-        choice4: "alert('Hello World');",
-        answer: 4
-    }*/
-
 
 //CONSTANTS
 const CORRECT_BONUS = 10;
@@ -106,70 +82,73 @@ getNewQuestions = () =>{
         //save the user score:
         localStorage.setItem("mostRecentScore", score);
         //go to ebd of the page:
-        return window.location.assign('end.html');
+        return window.location.assign('end.html'); //sorulacak soru kalmadıysa
     }
 
     questionCounter++;
     progressText.innerText = ` Question ${questionCounter}/${MAX_QUESTIONS}`;
  
-    //UPDATE THE PROGRESS BAR:(on prend pourcentage de chq qstn vrai)
 
-   progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`; //val en % ``
 
-     const questionIndex = Math.floor(Math.random() * availableQuestions.length);
+   progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`; 
+
+     const questionIndex = Math.floor(Math.random() * availableQuestions.length);//rastgele soru 
      currentQuestion = availableQuestions[questionIndex];
      question.innerText = currentQuestion.question;
 
      choices.forEach(choice =>{
-          const number = choice.dataset['number']; //aller au data-nmbr ds game.html
-          choice.innerText = currentQuestion['choice' + number]; // remplaer choice i par sa val i qui est ds tab
+          const number = choice.dataset['number']; //şıkların sayısı 
+          choice.innerText = currentQuestion['choice' + number]; // şıkların içeriği
 
      });
 
-     availableQuestions.splice(questionIndex, 1); //so as to get red from the question that we use before
+     availableQuestions.splice(questionIndex, 1); //soruyu çıkartır
 
      acceptingAnswes= true;
 };
 
-choices.forEach(choice =>{
+
+choices.forEach(choice => {
     choice.addEventListener('click', e => {
-           if(!acceptingAnswes) return;
+        if (!acceptingAnswes) return;//sorulara tıklanabilirlik salıyor
 
-           acceptingAnswes = false;
-           const selectedChoice = e.target;
-           const selectedAnswer = selectedChoice.dataset['number'];
+        acceptingAnswes = false;
+        const selectedChoice = e.target;//seçilen dom elemanını
+        const selectedAnswer = selectedChoice.dataset['number'];
 
-            const classToApply = 
+        const classToApply = 
             selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect';
-           
-               //increment the score if the correct answer:
-                  if(classToApply === 'correct'){
-                      incrementScore(CORRECT_BONUS);
-                  }  
 
-            //add the class:
-            selectedChoice.parentElement.classList.add(classToApply);
+        // Doğru cevaba 'correct' sınıfı ekle
+        const correctChoice = choices.find(
+            choice => choice.dataset['number'] == currentQuestion.answer
+        );
+        if (correctChoice) {
+            correctChoice.parentElement.classList.add('correct');
+        }
 
-            setTimeout(() =>{
-                //remove that class after his work:
-                selectedChoice.parentElement.classList.remove(classToApply);
-                getNewQuestions();
-            },1000); //how long to do the main setTimeout
+        // Yanlış cevabı kontrol et ve puan artır
+        if (classToApply === 'correct') {
+            incrementScore(CORRECT_BONUS);
+        }
 
-             //or use :
-            /* const classToApply = 'incorrect';
-             if(selectedAnswer == currentQuestion.answer){
-                 classToApply = 'correct'
-             }*/
+        selectedChoice.parentElement.classList.add(classToApply);
 
-          
-           
+        setTimeout(() => {
+            // Sınıfları kaldır
+            selectedChoice.parentElement.classList.remove(classToApply);
+            if (correctChoice) {
+                correctChoice.parentElement.classList.remove('correct');
+            }
+            getNewQuestions();
+        }, 2000);
     });
 });
+
 
 incrementScore = num => {
     score +=num;
     scoreText.innerText = score;  
 }
 
-//startGame();
+

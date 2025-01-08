@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Film Quiz - Learn and Test Your Knowledge</title>
+    <title>Films Quiz - Knowledge!</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -23,7 +23,7 @@
         h1 {
             text-align: center;
             font-size: 36px;
-            color: #ff6f61;
+            color: #6c63ff;
             margin-bottom: 30px;
         }
 
@@ -51,20 +51,6 @@
             margin: 10px 0;
             padding: 10px;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .options li:hover {
-            background-color: #eaeaea;
-        }
-
-        .correct {
-            background-color: #8bc34a;
-        }
-
-        .incorrect {
-            background-color: #f44336;
         }
 
         .answer {
@@ -75,122 +61,68 @@
         .answer span {
             font-weight: bold;
         }
-
-        .explanation {
-            font-size: 16px;
-            color: #777;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Film Quiz - Learn and Test Your Knowledge</h1>
-        
-        <!-- Question 1 -->
-        <div class="question-card">
-            <p class="question">Who plays the character of Po in the Kung Fu Panda movies?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Mirana Jonnes</li>
-                <li data-answer="incorrect">McConahey Ramses</li>
-                <li data-answer="incorrect">Jim Petersson</li>
-                <li data-answer="correct">Jack Black</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Jack Black</span>.
-            </div>
-            <div class="explanation">
-                Jack Black voices the main character Po, a lovable panda who dreams of becoming a kung fu master.
-            </div>
+        <h1>Musicals & Theatres Quiz - Test Your Theatre Knowledge!</h1>
+        <div id="questions-container">
+            <!-- Sorular burada dinamik olarak yüklenecek -->
         </div>
-
-        <!-- Question 2 -->
-        <div class="question-card">
-            <p class="question">Which of these Movies was NOT released in 1996?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Independence Day</li>
-                <li data-answer="incorrect">The Rock</li>
-                <li data-answer="incorrect">Mission: Impossible</li>
-                <li data-answer="correct">Gladiator</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Gladiator</span>.
-            </div>
-            <div class="explanation">
-                "Gladiator" was released in 2000, not 1996.
-            </div>
-        </div>
-
-        <!-- Question 3 -->
-        <div class="question-card">
-            <p class="question">In the movie Gremlins, after what time of day should you not feed Mogwai?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Evening</li>
-                <li data-answer="incorrect">Morning</li>
-                <li data-answer="incorrect">Afternoon</li>
-                <li data-answer="correct">Midnight</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Midnight</span>.
-            </div>
-            <div class="explanation">
-                In the film "Gremlins", feeding Mogwai after midnight leads to disastrous consequences!
-            </div>
-        </div>
-
-        <!-- Question 4 -->
-        <div class="question-card">
-            <p class="question">In the Super Mario Bros. Movie (2023), who plays Toad?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Seth Rogan</li>
-                <li data-answer="incorrect">Charlie Day</li>
-                <li data-answer="incorrect">Jack Black</li>
-                <li data-answer="correct">Keegan-Michael Key</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Keegan-Michael Key</span>.
-            </div>
-            <div class="explanation">
-                Keegan-Michael Key voices the character Toad in the 2023 "Super Mario Bros." movie.
-            </div>
-        </div>
-
-        <!-- Question 5 -->
-        <div class="question-card">
-            <p class="question">Who played Deputy Marshal Samuel Gerard in the 1993 film "The Fugitive"?</p>
-            <ul class="options">
-                <li data-answer="incorrect">Harrison Ford</li>
-                <li data-answer="incorrect">Harvey Keitel</li>
-                <li data-answer="incorrect">Martin Landau</li>
-                <li data-answer="correct">Tommy Lee Jones</li>
-            </ul>
-            <div class="answer">
-                The correct answer is <span>Tommy Lee Jones</span>.
-            </div>
-            <div class="explanation">
-                Tommy Lee Jones played the role of Deputy Marshal Samuel Gerard in "The Fugitive" and won an Oscar for it!
-            </div>
-        </div>
-
-        <!-- More questions can be added in the same format -->
-
     </div>
 
     <script>
-        // Add interactivity to the quiz
-        const options = document.querySelectorAll('.options li');
-        options.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remove previous highlights
-                options.forEach(opt => opt.classList.remove('correct', 'incorrect'));
-                // Highlight the clicked option
-                if (this.getAttribute('data-answer') === 'correct') {
-                    this.classList.add('correct');
-                } else {
-                    this.classList.add('incorrect');
-                }
+        // Soruları çekmek için API'yi kullan
+        fetch('https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple')
+            .then(response => response.json()) // JSON formatına dönüştür
+            .then(data => {
+                const questionsContainer = document.getElementById('questions-container');
+
+                // Her bir soruyu işleyip ekleyelim
+                data.results.forEach(questionData => {
+                    const questionCard = document.createElement('div');
+                    questionCard.classList.add('question-card');
+                    
+                    // Soru başlığını ekleyelim
+                    const questionText = document.createElement('p');
+                    questionText.classList.add('question');
+                    questionText.innerHTML = questionData.question;
+                    questionCard.appendChild(questionText);
+
+                    // Şıklar listesini oluştur
+                    const optionsList = document.createElement('ul');
+                    optionsList.classList.add('options');
+                    
+                    const answerChoices = [...questionData.incorrect_answers];
+                    const correctAnswer = questionData.correct_answer;
+
+                    // Doğru cevabı rastgele bir yere ekleyelim
+                    const correctAnswerIndex = Math.floor(Math.random() * 4);
+                    answerChoices.splice(correctAnswerIndex, 0, correctAnswer);
+                    
+                    // Şıkları ekleyelim
+                    answerChoices.forEach(choice => {
+                        const optionItem = document.createElement('li');
+                        optionItem.textContent = choice;
+                        optionsList.appendChild(optionItem);
+                    });
+                    
+                    questionCard.appendChild(optionsList);
+
+                    // Cevap kısmını ekleyelim
+                    const answerDiv = document.createElement('div');
+                    answerDiv.classList.add('answer');
+                    answerDiv.innerHTML = `The correct answer is: <span>${correctAnswer}</span>`;
+                    
+                    questionCard.appendChild(answerDiv);
+
+                    // Soruyu sayfaya ekleyelim
+                    questionsContainer.appendChild(questionCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching questions:', error);
             });
-        });
     </script>
 </body>
 </html>

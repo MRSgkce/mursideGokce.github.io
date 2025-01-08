@@ -4,127 +4,148 @@ const progressText = document.getElementById('progressText');
 const scoreText = document.getElementById('score');
 const progressBarFull = document.getElementById('progressBarFull');
 
-const loader = document.getElementById('loader');
+const loader = document.getElementById('loader')
 const game = document.getElementById('game');
 
+
 let currentQuestion = {};
-let acceptingAnswers = false; // Fixed the typo from 'acceptingAnswes'
+let acceptingAnswes = false;
 let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 
-let questions = []; // To hold the questions from the API
+let questions = []; //voir json
 
-// Fetch questions from the Open Trivia Database API
-fetch("https://opentdb.com/api.php?amount=3&category=31&difficulty=easy&type=multiple")
+//fetch question from .json:
+fetch(
+    //"questions.json"
+    "https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple"
+    )
+.then(res =>{
+    return res.json();
+})
+  .then(loadedQuestions => {
+      console.log(loadedQuestions.results);
 
-    .then(res => res.json())
-    .then(loadedQuestions => {
-        console.log(loadedQuestions.results);
+      questions = loadedQuestions.results.map(loadedQuestion => {
+          const formattedQuestion = {
+             question: loadedQuestion.question
+          };
 
-        // Process the API questions
-        questions = loadedQuestions.results.map(loadedQuestion => {
-            const formattedQuestion = {
-                question: loadedQuestion.question
-            };
+          const answerChoices = [...loadedQuestion.incorrect_answers];
+          formattedQuestion.answer = Math.floor(Math.random() * 3) + 1;
+          answerChoices.slice(
+              formattedQuestion.answer - 1,
+              0,
+              loadedQuestion.correct_answer
+          );
 
-            // Create an array of answer choices and randomly insert the correct answer
-            const answerChoices = [...loadedQuestion.incorrect_answers];
-            formattedQuestion.answer = Math.floor(Math.random() * 4) + 1; // Correct answer will be between 1 and 4
-            answerChoices.splice(formattedQuestion.answer - 1, 0, loadedQuestion.correct_answer); // Insert correct answer at a random position
+          answerChoices.forEach((choice, index) =>{
+              formattedQuestion["choice" + (index +1)] = choice;
+          });
+          return formattedQuestion;
+      });
 
-            // Assign choices to the formatted question object
-            answerChoices.forEach((choice, index) => {
-                formattedQuestion["choice" + (index + 1)] = choice;
-            });
-
-            return formattedQuestion;
-        });
-
-        // Start the game after processing the questions
-        startGame();
-    })
+      
+       
+      //questions = loadedQuestions;
+      startGame();
+  })
     .catch(err => {
-        console.log(err);
+         console.log(err);
     });
 
-// CONSTANTS
+    
+
+//CONSTANTS
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
 
-startGame = () => {
+startGame = () =>{
     questionCounter = 0;
     score = 0;
-    availableQuestions = [...questions]; // Copy all the questions to availableQuestions array
+    availableQuestions = [...questions]; //copy all the qst from questions array to the availableQuestions one
     
     getNewQuestions();
 
-    // Remove the loading screen and show the game
+    //remove the loading and turn the game:
     game.classList.remove("hidden");
     loader.classList.add("hidden");
 };
 
-getNewQuestions = () => {
-    if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
-        // Save the user's score to localStorage
+getNewQuestions = () =>{
+     
+    if(availableQuestions.length ===0 || questionCounter >= MAX_QUESTIONS){
+
+        //save the user score:
         localStorage.setItem("mostRecentScore", score);
-        // Redirect to the end page
+        //go to ebd of the page:
         return window.location.assign('end.html');
     }
 
     questionCounter++;
     progressText.innerText = ` Question ${questionCounter}/${MAX_QUESTIONS}`;
+ 
+    //UPDATE THE PROGRESS BAR:(on prend pourcentage de chq qstn vrai)
 
-    // Update the progress bar
-    progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
+   progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`; //val en % ``
 
-    // Get a random question
-    const questionIndex = Math.floor(Math.random() * availableQuestions.length);
-    currentQuestion = availableQuestions[questionIndex];
-    question.innerText = currentQuestion.question;
+     const questionIndex = Math.floor(Math.random() * availableQuestions.length);
+     currentQuestion = availableQuestions[questionIndex];
+     question.innerText = currentQuestion.question;
 
-    // Display the choices
-    choices.forEach(choice => {
-        const number = choice.dataset['number']; // Get the data-number from HTML
-        choice.innerText = currentQuestion['choice' + number]; // Set the choice text
-    });
+     choices.forEach(choice =>{
+          const number = choice.dataset['number']; //aller au data-nmbr ds game.html
+          choice.innerText = currentQuestion['choice' + number]; // remplaer choice i par sa val i qui est ds tab
 
-    // Remove the question from available questions
-    availableQuestions.splice(questionIndex, 1);
+     });
 
-    acceptingAnswers = true;
+     availableQuestions.splice(questionIndex, 1); //so as to get red from the question that we use before
+
+     acceptingAnswes= true;
 };
 
-// Handle the user's choice
 choices.forEach(choice => {
     choice.addEventListener('click', e => {
-        if (!acceptingAnswers) return;
+        if (!acceptingAnswes) return;
 
-        acceptingAnswers = false;
+        acceptingAnswes = false;
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset['number'];
 
-        // Determine if the answer is correct or incorrect
-        const classToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect';
+        const classToApply = 
+            selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect';
 
-        // Increment score if the answer is correct
+        // Doğru cevaba 'correct' sınıfı ekle
+        const correctChoice = choices.find(
+            choice => choice.dataset['number'] == currentQuestion.answer
+        );
+        if (correctChoice) {
+            correctChoice.parentElement.classList.add('correct');
+        }
+
+        // Yanlış cevabı kontrol et ve puan artır
         if (classToApply === 'correct') {
             incrementScore(CORRECT_BONUS);
         }
 
-        // Apply the correct/incorrect class to the choice
         selectedChoice.parentElement.classList.add(classToApply);
 
-        // Move to the next question after a short delay
         setTimeout(() => {
+            // Sınıfları kaldır
             selectedChoice.parentElement.classList.remove(classToApply);
+            if (correctChoice) {
+                correctChoice.parentElement.classList.remove('correct');
+            }
             getNewQuestions();
-        }, 1000);
+        }, 2000);
     });
 });
 
-// Function to increment the score
+
 incrementScore = num => {
-    score += num;
-    scoreText.innerText = score;
-};
+    score +=num;
+    scoreText.innerText = score;  
+}
+
+//startGame();
